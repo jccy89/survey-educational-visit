@@ -147,7 +147,3 @@ elif page == "Claim Certificate":
                 st.error("Invalid Completion Code. Please check the code provided at the end of the survey.")
         else:
             st.error("No submissions found yet.")
-            else:
-                st.error("Invalid Completion Code.")
-        else:
-            st.error("No submissions found yet.")
