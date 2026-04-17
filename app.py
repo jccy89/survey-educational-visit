@@ -104,23 +104,49 @@ elif page == "Take Survey":
 # --- PAGE 3: CLAIM CERTIFICATE ---
 elif page == "Claim Certificate":
     st.title("Download Participation Certificate")
-    st.write("Enter your details exactly as they appear on your records.")
     
-    claim_name = st.text_input("Full Name (for filename matching)")
+    # Using a callout box for the examples
+    st.info("""
+    **Format Examples:**
+    * Full Name: **Jenny Choo Cheng Yi**
+    * Full Name: **Ali Bin Ahmad**
+    
+    *Note: Please ensure the spelling matches your official registration.*
+    """)
+    
+    # Added the 'help' parameter for extra clarity
+    claim_name = st.text_input(
+        "Full Name", 
+        help="Enter your name exactly as shown in the examples above to match our records."
+    )
+    
     claim_code = st.text_input("Completion Code")
     
     if st.button("Verify & Download"):
         if os.path.exists(TICKET_FILE):
-            tickets = pd.read_csv(TICKET_FILE)['code'].astype(str).tolist()
+            # Read the CSV and ensure we are comparing strings
+            tickets_df = pd.read_csv(TICKET_FILE)
+            tickets = tickets_df['code'].astype(str).values
+            
             if claim_code in tickets:
-                # Assuming certificates are named 'Full Name.pdf'
+                # Logic to find the file
                 file_path = os.path.join(CERT_FOLDER, f"{claim_name}.pdf")
                 
                 if os.path.exists(file_path):
                     with open(file_path, "rb") as f:
-                        st.download_button("Click here to Download PDF", f, file_name=f"TEGAS_Visit_{claim_name}.pdf")
+                        st.download_button(
+                            label="📥 Click here to Download PDF", 
+                            data=f, 
+                            file_name=f"TEGAS_Visit_{claim_name}.pdf",
+                            mime="application/pdf"
+                        )
+                    st.success("Verification successful! Your download is ready.")
                 else:
-                    st.error(f"Certificate for '{claim_name}' not found. Please check spelling.")
+                    st.error(f"Certificate for '{claim_name}' not found. Please check your spelling and try again.")
+            else:
+                st.error("Invalid Completion Code. Please check the code provided at the end of the survey.")
+        else:
+            st.error("No submissions found yet.")
             else:
                 st.error("Invalid Completion Code.")
         else:
