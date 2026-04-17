@@ -78,10 +78,8 @@ elif page == "Take Survey":
         q23 = st.text_area("23. Suggestions to improve future visits?")
         
         # Question 24
-        q24_check = st.radio("24. Any specific industry you'd like to visit in the future?", ["No", "Yes"])
-        q24_detail = ""
-        if q24_check == "Yes":
-            q24_detail = st.text_input("Please specify industry:")
+        # Amended Question 24
+        q24 = st.text_area("24. Do you have a company or industry you would like to visit in the future (e.g. technology, creative media, healthcare, engineering, startups)? If yes, please specify.")
 
         submitted = st.form_submit_button("Submit Survey")
 
