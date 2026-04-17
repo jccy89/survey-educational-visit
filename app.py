@@ -84,22 +84,27 @@ elif page == "Take Survey":
         submitted = st.form_submit_button("Submit Survey")
 
     if submitted:
-        # Save responses (ID/Names NOT included)
-        resp_data = {
-            "Q1": q1, "Q2": q2, "Q3": q3, "Q4": q4, "Q5": q5, "Q6": q6, "Q7": q7,
-            "Q8": q8, "Q9": q9, "Q10": q10, "Q11": q11, "Q12": q12, "Q13": q13,
-            "Q14": q14, "Q15": q15, "Q16": q16, "Q17": q17, "Q18": q18, "Q19": q19,
-            "Q20": q20, "Q21": q21, "Q22": q22, "Q23": q23, "Q24": f"{q24_check}: {q24_detail}"
-        }
-        pd.DataFrame([resp_data]).to_csv(RESPONSE_FILE, mode='a', index=False, header=not os.path.exists(RESPONSE_FILE))
-        
-        # Generate Ticket
-        ticket = generate_code()
-        pd.DataFrame([{"code": ticket}]).to_csv(TICKET_FILE, mode='a', index=False, header=not os.path.exists(TICKET_FILE))
-        
-        st.balloons()
-        st.success(f"Thank you! Your anonymous completion code is: **{ticket}**")
-        st.warning("Copy this code and head to the 'Claim Certificate' page to get your PDF.")
+        # 1. Check for missing answers
+        # We check if qualitative text areas are empty or if q24 detail is missing if selected
+        if not q4.strip() or not q22.strip() or not q23.strip() or not q24.strip():
+            st.error("⚠️ Please answer all questions before submitting.")
+        else:
+            # 2. Save responses (Anonymized)
+            resp_data = {
+                "Q1": q1, "Q2": q2, "Q3": q3, "Q4": q4, "Q5": q5, "Q6": q6, "Q7": q7,
+                "Q8": q8, "Q9": q9, "Q10": q10, "Q11": q11, "Q12": q12, "Q13": q13,
+                "Q14": q14, "Q15": q15, "Q16": q16, "Q17": q17, "Q18": q18, "Q19": q19,
+                "Q20": q20, "Q21": q21, "Q22": q22, "Q23": q23, "Q24": q24
+            }
+            pd.DataFrame([resp_data]).to_csv(RESPONSE_FILE, mode='a', index=False, header=not os.path.exists(RESPONSE_FILE))
+            
+            # 3. Generate Ticket
+            ticket = generate_code()
+            pd.DataFrame([{"code": ticket}]).to_csv(TICKET_FILE, mode='a', index=False, header=not os.path.exists(TICKET_FILE))
+            
+            st.balloons()
+            st.success(f"Thank you! Your anonymous completion code is: **{ticket}**")
+            st.warning("Copy this code and head to the 'Claim Certificate' page to get your PDF.")
 
 # --- PAGE 3: CLAIM CERTIFICATE ---
 elif page == "Claim Certificate":
