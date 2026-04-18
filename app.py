@@ -120,23 +120,32 @@ elif page == "Take Survey":
         if not q4.strip() or not q22.strip() or not q23.strip() or not q24.strip():
             st.error("⚠️ Please answer all questions before submitting.")
         else:
-            # 2. Save responses (Anonymized)
+            # 1. Generate the AI Career Insight
+            with st.spinner("AI is analyzing your reflections..."):
+                ai_insight = get_career_insight(q22, q23, q24)
+            
+            # 2. Save ALL responses including the AI insight (Anonymized)
             resp_data = {
+                "Timestamp": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M"),
                 "Q1": q1, "Q2": q2, "Q3": q3, "Q4": q4, "Q5": q5, "Q6": q6, "Q7": q7,
                 "Q8": q8, "Q9": q9, "Q10": q10, "Q11": q11, "Q12": q12, "Q13": q13,
                 "Q14": q14, "Q15": q15, "Q16": q16, "Q17": q17, "Q18": q18, "Q19": q19,
-                "Q20": q20, "Q21": q21, "Q22": q22, "Q23": q23, "Q24": q24
+                "Q20": q20, "Q21": q21, "Q22": q22, "Q23": q23, "Q24": q24,
+                "AI_Insight": ai_insight  # Added this so you can retrieve it later
             }
             pd.DataFrame([resp_data]).to_csv(RESPONSE_FILE, mode='a', index=False, header=not os.path.exists(RESPONSE_FILE))
             
-            # 3. Generate Ticket
+            # 3. Generate Ticket and link it to the AI Insight
             ticket = generate_code()
-            pd.DataFrame([{"code": ticket}]).to_csv(TICKET_FILE, mode='a', index=False, header=not os.path.exists(TICKET_FILE))
+            ticket_data = {
+                "code": ticket, 
+                "insight": ai_insight  # This is crucial for the Claim page to work!
+            }
+            pd.DataFrame([ticket_data]).to_csv(TICKET_FILE, mode='a', index=False, header=not os.path.exists(TICKET_FILE))
             
             st.balloons()
             st.success(f"Thank you! Your anonymous completion code is: **{ticket}**")
             st.warning("Copy this code and head to the 'Claim Certificate' page to get your PDF.")
-
 # --- PAGE 3: CLAIM CERTIFICATE ---
 elif page == "Claim Certificate":
     st.title("Download Participation Certificate")
