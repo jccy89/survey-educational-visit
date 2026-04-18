@@ -126,8 +126,6 @@ elif page == "Claim Certificate":
     **Format Examples:**
     * Full Name: **Jenny Choo Cheng Yi**
     * Full Name: **Ali Bin Ahmad**
-    
-    *Note: Please ensure the spelling matches your official registration.*
     """)
     
     # Added the 'help' parameter for extra clarity
