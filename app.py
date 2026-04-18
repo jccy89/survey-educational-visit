@@ -1,4 +1,19 @@
 import streamlit as st
+import google.generativeai as genai
+
+# --- AI Configuration ---
+# This looks for the key in your Streamlit Cloud Secrets
+try:
+    api_key = st.secrets["GEMINI_API_KEY"]
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel('gemini-1.5-flash')
+except Exception as e:
+    st.error("AI Configuration Error: Please check Secrets settings.")
+
+def get_career_insight(q22, q23, q24):
+    # (The rest of the function remains the same)
+
+import streamlit as st
 import pandas as pd
 import os
 import random
