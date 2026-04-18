@@ -192,3 +192,26 @@ elif page == "Claim Certificate":
                 st.error("Invalid Completion Code. Please check the code provided at the end of the survey.")
         else:
             st.error("No submissions found yet.")
+    
+# --- SIDEBAR NAVIGATION ---
+page = st.sidebar.selectbox("Navigate", ["Survey", "Claim Certificate", "Admin Dashboard"])
+
+if page == "Admin Dashboard":
+    st.title("📊 Survey Analytics (Admin Only)")
+    
+    # Simple "Secret" password check for the competition demo
+    password = st.text_input("Enter Admin Password", type="password")
+    if password == "sarawak2026": # Change this to your own password
+        if os.path.exists(RESPONSE_FILE):
+            responses_df = pd.read_csv(RESPONSE_FILE)
+            
+            st.write(f"Total Submissions: {len(responses_df)}")
+            
+            # Display the full table
+            st.dataframe(responses_df)
+            
+            # Allow you to download the master list as a fresh CSV
+            csv = responses_df.to_csv(index=False).encode('utf-8')
+            st.download_button("Download Master CSV", data=csv, file_name="master_responses.csv")
+        else:
+            st.info("No responses collected yet.")
