@@ -113,7 +113,8 @@ elif page == "Take Survey":
             pd.DataFrame([{"code": ticket}]).to_csv(TICKET_FILE, mode='a', index=False, header=not os.path.exists(TICKET_FILE))
             
             st.balloons()
-            st.success(f"Thank you! Your completion code is: **{ticket}**")
+            st.success(f"Thank you! Your anonymous completion code is: **{ticket}**")
+            st.warning("Copy this code and head to the 'Claim Certificate' page to get your PDF.")
 
 # --- PAGE 3: CLAIM CERTIFICATE ---
 elif page == "Claim Certificate":
