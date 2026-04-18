@@ -45,9 +45,9 @@ def generate_code():
 # --- APP START ---
 st.set_page_config(page_title="TEGAS Industry Visit Survey", layout="centered")
 
-# Sidebar Navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Survey Instructions", "Take Survey", "Claim Certificate"])
+# --- SIDEBAR NAVIGATION ---
+# Add "Admin Panel" to the list of choices
+page = st.sidebar.selectbox("Navigate", ["Survey", "Claim Certificate", "Admin Panel"])
 
 # --- PAGE 1: INSTRUCTIONS ---
 if page == "Survey Instructions":
@@ -194,8 +194,6 @@ elif page == "Claim Certificate":
             st.error("No submissions found yet.")
     
 # --- SIDEBAR NAVIGATION ---
-page = st.sidebar.selectbox("Navigate", ["Survey", "Claim Certificate", "Admin Dashboard"])
-
 if page == "Admin Dashboard":
     st.title("📊 Survey Analytics (Admin Only)")
     
