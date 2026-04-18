@@ -5,6 +5,10 @@ import random
 import string
 from datetime import datetime, timedelta
 
+# TEMPORARY RESET - Remove these two lines after the app loads once!
+if os.path.exists("survey_responses.csv"): os.remove("survey_responses.csv")
+if os.path.exists("valid_tickets.csv"): os.remove("valid_tickets.csv")
+
 # --- Configuration & Helper Functions ---
 CERT_FOLDER = "certificates"
 TICKET_FILE = "valid_tickets.csv"
