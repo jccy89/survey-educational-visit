@@ -29,19 +29,19 @@ if page == "Survey Instructions":
     st.subheader("Industry Visit: TEGAS Digital Village")
     
     st.markdown("""
-    Thank you for participating in the learning visit to TEGAS Digital Village.
-This survey aims to gather your feedback and reflections on your learning experience, including your understanding of entrepreneurship, exposure to startups, and personal insights gained from the entrepreneurs’ sharings and facility tour.
-Please note that:
-•	Your participation in this survey is voluntary. You may withdraw your participation at any time.
-•	The survey is anonymous. No personally identifiable information will be collected.
-•	Your responses will be used only for learning and teaching enhancement, programme improvement, and educational research purposes.
-•	Your answers will not affect your academic results.
-The survey will take approximately 5–7 minutes to complete. Please answer honestly based on your experience.
-Upon completing the survey, you will be able to obtain a digital certificate of participation.
-By proceeding with the survey, you indicate your consent to participate. 
-Thank you for your time and valuable feedback.
-""")
-    st.info("Please click 'Take Survey' in the sidebar to begin.")
+    Thank you for participating in the learning visit to **TEGAS Digital Village**. 
+    This survey aims to gather your feedback on your understanding of entrepreneurship and personal insights gained.
+    
+    **Please note:**
+    * Participation is **voluntary** and **anonymous**.
+    * No personally identifiable information will be collected.
+    * Your answers will **not affect your academic results**.
+    * It takes approximately **5–7 minutes**.
+    
+    *Upon completion, you will receive a digital certificate of participation.*
+    """)
+    if st.button("Proceed to Survey"):
+        st.info("Please select 'Take Survey' from the sidebar.")
 
 # --- PAGE 2: TAKE SURVEY ---
 elif page == "Take Survey":
