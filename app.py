@@ -119,48 +119,42 @@ elif page == "Take Survey":
 elif page == "Claim Certificate":
     st.title("Download Participation Certificate")
     
-    # Using a callout box for the examples
-    st.info("""
-    **Format Examples:**
-    * Full Name: **Jenny Choo Cheng Yi**
-    * Full Name: **Ali Bin Ahmad**
+    st.info("Note: Each completion code can only be used ONCE. Please ensure your name is spelled correctly before clicking verify.")
     
-    *Note: Please ensure the spelling matches your official registration.*
-    """)
-    
-    # Added the 'help' parameter for extra clarity
-    claim_name = st.text_input(
-        "Full Name", 
-        help="Enter your name exactly as shown in the examples above to match our records."
-    )
-    
-    claim_code = st.text_input("Completion Code")
+    claim_name = st.text_input("Full Name")
+    claim_code = st.text_input("Completion Code").strip()
     
     if st.button("Verify & Download"):
         if os.path.exists(TICKET_FILE):
-            # Read the CSV and ensure we are comparing strings
+            # 1. Load the valid tickets
             tickets_df = pd.read_csv(TICKET_FILE)
-            tickets = tickets_df['code'].astype(str).values
             
-            if claim_code in tickets:
-                # Logic to find the file
+            # 2. Check if the code exists
+            if claim_code in tickets_df['code'].astype(str).values:
                 file_path = os.path.join(CERT_FOLDER, f"{claim_name}.pdf")
                 
                 if os.path.exists(file_path):
+                    # --- THE "BURN" LOGIC ---
+                    # Remove the used code from the dataframe
+                    updated_tickets = tickets_df[tickets_df['code'].astype(str) != claim_code]
+                    # Overwrite the CSV file without the used code
+                    updated_tickets.to_csv(TICKET_FILE, index=False)
+                    
+                    # Provide the download
                     with open(file_path, "rb") as f:
                         st.download_button(
-                            label="📥 Click here to Download PDF", 
+                            label="📥 Download PDF", 
                             data=f, 
-                            file_name=f"TEGAS_Visit_{claim_name}.pdf",
+                            file_name=f"Visit_{claim_name}.pdf",
                             mime="application/pdf"
                         )
-                    st.success("Verification successful! Your download is ready.")
+                    st.success("Verification successful! Your code has been used and is now deactivated.")
                 else:
-                    st.error(f"Certificate for '{claim_name}' not found. Please check your spelling and try again.")
+                    st.error(f"Certificate for '{claim_name}' not found. Please ensure the filename exists in your GitHub certificates folder.")
             else:
-                st.error("Invalid Completion Code. Please check the code provided at the end of the survey.")
+                st.error("This code is invalid or has already been used.")
         else:
-            st.error("No submissions found yet.")
+            st.error("No completion records found on the server.")
 
 
 # --- PAGE 4: ADMIN PANEL ---
