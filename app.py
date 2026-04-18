@@ -47,7 +47,7 @@ st.set_page_config(page_title="TEGAS Industry Visit Survey", layout="centered")
 
 # --- SIDEBAR NAVIGATION ---
 # Add "Admin Panel" to the list of choices
-page = st.sidebar.selectbox("Navigate", ["Survey", "Claim Certificate", "Admin Panel"])
+page = st.sidebar.selectbox("Navigate", ["Survey Instructions", "Take Survey", "Claim Certificate", "Admin Panel"])
 
 # --- PAGE 1: INSTRUCTIONS ---
 if page == "Survey Instructions":
