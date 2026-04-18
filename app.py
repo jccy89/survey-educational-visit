@@ -194,22 +194,36 @@ elif page == "Claim Certificate":
             st.error("No submissions found yet.")
     
 # --- SIDEBAR NAVIGATION ---
-if page == "Admin Dashboard":
-    st.title("📊 Survey Analytics (Admin Only)")
+# ... after your 'Claim Certificate' code block ...
+
+elif page == "Admin Panel":
+    st.title("📂 Admin Data Retrieval")
+    st.write("Secure access to survey responses and AI insights.")
+
+    # A simple access key to prevent students from seeing the data
+    access_code = st.text_input("Enter Access Key", type="password")
     
-    # Simple "Secret" password check for the competition demo
-    password = st.text_input("Enter Admin Password", type="password")
-    if password == "sarawak2026": # Change this to your own password
+    if access_code == "Sarawak2026": # You can change this to any password
         if os.path.exists(RESPONSE_FILE):
             responses_df = pd.read_csv(RESPONSE_FILE)
             
-            st.write(f"Total Submissions: {len(responses_df)}")
+            # Show a small summary
+            st.metric("Total Responses", len(responses_df))
             
-            # Display the full table
-            st.dataframe(responses_df)
+            # Data Preview
+            st.subheader("Data Preview (Last 5)")
+            st.dataframe(responses_df.tail(5))
             
-            # Allow you to download the master list as a fresh CSV
-            csv = responses_df.to_csv(index=False).encode('utf-8')
-            st.download_button("Download Master CSV", data=csv, file_name="master_responses.csv")
+            # THE DOWNLOAD BUTTON
+            csv_data = responses_df.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="📥 Download Master CSV for Research",
+                data=csv_data,
+                file_name=f"TEGAS_Survey_Data_{pd.Timestamp.now().strftime('%Y%m%d')}.csv",
+                mime="text/csv",
+                help="Click here to download all anonymous student reflections and AI insights."
+            )
         else:
-            st.info("No responses collected yet.")
+            st.info("No data has been collected on this server yet. Once students submit the survey, the file will appear here.")
+    elif access_code != "":
+        st.error("Incorrect Access Key.")
