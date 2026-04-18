@@ -1,25 +1,40 @@
 import streamlit as st
+import pandas as pd
+import os
+import random
+import string
 import google.generativeai as genai
 
 # --- AI Configuration ---
-# This looks for the key in your Streamlit Cloud Secrets
 try:
     api_key = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel('gemini-1.5-flash')
 except Exception as e:
-    st.error("AI Configuration Error: Please check Secrets settings.")
+    # We use st.write or pass here so the app doesn't crash if the key isn't set yet
+    model = None 
 
 def get_career_insight(q22, q23, q24):
-    # (The rest of the function remains the same)
+    prompt = f"""
+    Based on these student reflections from a visit to TEGAS Digital Village:
+    - Insight: {q22}
+    - Suggestions: {q23}
+    - Future Interests: {q24}
+    
+    Provide a 2-3 sentence personalized, encouraging "Career Insight." 
+    Focus on how their specific interests relate to the Sarawak digital economy.
+    Keep it professional and inspiring.
+    """
+    if model:
+        try:
+            response = model.generate_content(prompt)
+            return response.text
+        except Exception as e:
+            return "Keep exploring the digital frontier! Your journey in innovation is just beginning."
+    else:
+        return "Great reflections! Continue exploring the opportunities at TEGAS and beyond."
 
-import streamlit as st
-import pandas as pd
-import os
-import random
-import string
-
-# --- Configuration ---
+# --- Configuration & Helper Functions ---
 CERT_FOLDER = "certificates"
 TICKET_FILE = "valid_tickets.csv"
 RESPONSE_FILE = "survey_responses.csv"
@@ -27,6 +42,7 @@ RESPONSE_FILE = "survey_responses.csv"
 def generate_code():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
+# --- APP START ---
 st.set_page_config(page_title="TEGAS Industry Visit Survey", layout="centered")
 
 # Sidebar Navigation
