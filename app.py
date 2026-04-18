@@ -196,34 +196,27 @@ elif page == "Claim Certificate":
 # --- SIDEBAR NAVIGATION ---
 # ... after your 'Claim Certificate' code block ...
 
+# --- PAGE 4: ADMIN PANEL (Add this here!) ---
 elif page == "Admin Panel":
     st.title("📂 Admin Data Retrieval")
     st.write("Secure access to survey responses and AI insights.")
 
-    # A simple access key to prevent students from seeing the data
     access_code = st.text_input("Enter Access Key", type="password")
     
-    if access_code == "Sarawak2026": # You can change this to any password
+    if access_code == "Sarawak2026": 
         if os.path.exists(RESPONSE_FILE):
             responses_df = pd.read_csv(RESPONSE_FILE)
-            
-            # Show a small summary
             st.metric("Total Responses", len(responses_df))
-            
-            # Data Preview
-            st.subheader("Data Preview (Last 5)")
             st.dataframe(responses_df.tail(5))
             
-            # THE DOWNLOAD BUTTON
             csv_data = responses_df.to_csv(index=False).encode('utf-8')
             st.download_button(
                 label="📥 Download Master CSV for Research",
                 data=csv_data,
                 file_name=f"TEGAS_Survey_Data_{pd.Timestamp.now().strftime('%Y%m%d')}.csv",
-                mime="text/csv",
-                help="Click here to download all anonymous student reflections and AI insights."
+                mime="text/csv"
             )
         else:
-            st.info("No data has been collected on this server yet. Once students submit the survey, the file will appear here.")
+            st.info("No data collected yet.")
     elif access_code != "":
         st.error("Incorrect Access Key.")
