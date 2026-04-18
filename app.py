@@ -91,29 +91,34 @@ elif page == "Take Survey":
         submitted = st.form_submit_button("Submit Survey")
 
     if submitted:
-        # Simple check for the qualitative fields
-        if not q22.strip() or not q23.strip() or not q24.strip():
-            st.error("⚠️ Please answer the text questions before submitting.")
+        # Check if the text areas are filled
+        if not q4.strip() or not q22.strip() or not q23.strip() or not q24.strip():
+            st.error("⚠️ Please answer all text questions before submitting.")
         else:
             # --- MALAYSIA TIME CALCULATION ---
-            # Streamlit servers are UTC, so we add 8 hours for Malaysia
             malaysia_time = datetime.utcnow() + timedelta(hours=8)
             timestamp_str = malaysia_time.strftime("%Y-%m-%d %H:%M:%S")
 
-            # Save Responses
+            # 1. Create a dictionary with ALL 24 questions
             resp_data = {
                 "Timestamp (MYT)": timestamp_str,
-                "Q1": q1,
-                "Q22": q22, "Q23": q23, "Q24": q24
+                "Q1": q1, "Q2": q2, "Q3": q3, "Q4": q4, "Q5": q5, 
+                "Q6": q6, "Q7": q7, "Q8": q8, "Q9": q9, "Q10": q10, 
+                "Q11": q11, "Q12": q12, "Q13": q13, "Q14": q14, "Q15": q15, 
+                "Q16": q16, "Q17": q17, "Q18": q18, "Q19": q19, "Q20": q20, 
+                "Q21": q21, "Q22": q22, "Q23": q23, "Q24": q24
             }
-            pd.DataFrame([resp_data]).to_csv(RESPONSE_FILE, mode='a', index=False, header=not os.path.exists(RESPONSE_FILE))
             
-            # Generate Ticket
+            # 2. Append to CSV
+            df_new = pd.DataFrame([resp_data])
+            df_new.to_csv(RESPONSE_FILE, mode='a', index=False, header=not os.path.exists(RESPONSE_FILE))
+            
+            # 3. Generate Ticket
             ticket = generate_code()
             pd.DataFrame([{"code": ticket}]).to_csv(TICKET_FILE, mode='a', index=False, header=not os.path.exists(TICKET_FILE))
             
             st.balloons()
-            st.success(f"Thank you! Your anonymous completion code is: **{ticket}**")
+            st.success(f"Thank you! Your completion code is: **{ticket}**")
             st.warning("Copy this code and head to the 'Claim Certificate' page to get your PDF.")
 
 # --- PAGE 3: CLAIM CERTIFICATE ---
