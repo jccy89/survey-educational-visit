@@ -192,8 +192,9 @@ elif page == "Claim Certificate":
                 st.error("Invalid Completion Code. Please check the code provided at the end of the survey.")
         else:
             st.error("No submissions found yet.")
-    
+            
 # --- PAGE 4: ADMIN PANEL (Add this here!) ---
+# REMOVE any extra 'if/else' or sidebar definitions between Page 3 and here!
 elif page == "Admin Panel":
     st.title("📂 Admin Data Retrieval")
     st.write("Secure access to survey responses and AI insights.")
