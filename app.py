@@ -193,8 +193,7 @@ elif page == "Claim Certificate":
         else:
             st.error("No submissions found yet.")
             
-# --- PAGE 4: ADMIN PANEL (Add this here!) ---
-# REMOVE any extra 'if/else' or sidebar definitions between Page 3 and here!
+# --- PAGE 4: ADMIN PANEL ---
 elif page == "Admin Panel":
     st.title("📂 Admin Data Retrieval")
     st.write("Secure access to survey responses and AI insights.")
