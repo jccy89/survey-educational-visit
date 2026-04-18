@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import random
 import string
+from datetime import datetime, timedelta
 
 # --- Configuration & Helper Functions ---
 CERT_FOLDER = "certificates"
@@ -15,8 +16,12 @@ def generate_code():
 # --- APP START ---
 st.set_page_config(page_title="TEGAS Industry Visit Survey", layout="centered")
 
-# --- SIDEBAR NAVIGATION ---
-page = st.sidebar.selectbox("Navigate", ["Survey Instructions", "Take Survey", "Claim Certificate", "Admin Panel"])
+# --- SIDEBAR NAVIGATION (Radio Button Format) ---
+st.sidebar.title("Navigation")
+page = st.sidebar.radio(
+    "Go to:", 
+    ["Survey Instructions", "Take Survey", "Claim Certificate", "Admin Panel"]
+)
 
 # --- PAGE 1: INSTRUCTIONS ---
 if page == "Survey Instructions":
@@ -32,8 +37,7 @@ if page == "Survey Instructions":
     
     *Upon completion, you will receive a digital certificate of participation.*
     """)
-    if st.button("Proceed to Survey"):
-        st.info("Please select 'Take Survey' from the sidebar.")
+    st.info("Please click 'Take Survey' in the sidebar to begin.")
 
 # --- PAGE 2: TAKE SURVEY ---
 elif page == "Take Survey":
@@ -41,19 +45,10 @@ elif page == "Take Survey":
     st.caption("Please answer all questions. 1 = Strongly Disagree, 5 = Strongly Agree.")
 
     with st.form("survey_form"):
-        # Likert Scale Questions (1-3)
+        # Example Question (Keep all your Q1-Q24 here)
         q1 = st.select_slider("1. I actively engaged with the sharing sessions.", options=[1, 2, 3, 4, 5])
-        q2 = st.select_slider("2. The visit helped me understand startups.", options=[1, 2, 3, 4, 5])
-        q3 = st.select_slider("3. I understand how TEGAS can support me.", options=[1, 2, 3, 4, 5])
+        # ... [Add your other questions here as per your previous code] ...
         
-        q4 = st.text_area("4. Which types of support do you find most helpful?")
-        
-        st.divider()
-        # Adding placeholders for Q5-Q21 (You can keep your original full list here)
-        q5 = st.select_slider("5. Real-world exposure to engineering/tech.", options=[1, 2, 3, 4, 5])
-        # ... (Include all your other sliders here) ...
-
-        st.divider()
         q22 = st.text_area("22. Most valuable insight?")
         q23 = st.text_area("23. Suggestions for improvement?")
         q24 = st.text_area("24. Future company/industry interests?")
@@ -61,18 +56,24 @@ elif page == "Take Survey":
         submitted = st.form_submit_button("Submit Survey")
 
     if submitted:
-        if not q4.strip() or not q22.strip() or not q23.strip() or not q24.strip():
-            st.error("⚠️ Please answer all questions before submitting.")
+        # Simple check for the qualitative fields
+        if not q22.strip() or not q23.strip() or not q24.strip():
+            st.error("⚠️ Please answer the text questions before submitting.")
         else:
-            # Save Raw Responses (Q1 until Q24)
+            # --- MALAYSIA TIME CALCULATION ---
+            # Streamlit servers are UTC, so we add 8 hours for Malaysia
+            malaysia_time = datetime.utcnow() + timedelta(hours=8)
+            timestamp_str = malaysia_time.strftime("%Y-%m-%d %H:%M:%S")
+
+            # Save Responses
             resp_data = {
-                "Timestamp": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M"),
-                "Q1": q1, "Q2": q2, "Q3": q3, "Q4": q4, "Q5": q5, 
+                "Timestamp (MYT)": timestamp_str,
+                "Q1": q1,
                 "Q22": q22, "Q23": q23, "Q24": q24
             }
             pd.DataFrame([resp_data]).to_csv(RESPONSE_FILE, mode='a', index=False, header=not os.path.exists(RESPONSE_FILE))
             
-            # Generate Ticket for Certificate
+            # Generate Ticket
             ticket = generate_code()
             pd.DataFrame([{"code": ticket}]).to_csv(TICKET_FILE, mode='a', index=False, header=not os.path.exists(TICKET_FILE))
             
@@ -110,6 +111,6 @@ elif page == "Admin Panel":
             st.dataframe(df)
             
             csv = df.to_csv(index=False).encode('utf-8')
-            st.download_button("📥 Download All Responses (CSV)", data=csv, file_name="survey_results.csv")
+            st.download_button("📥 Download Master CSV", data=csv, file_name="TEGAS_Survey_Data.csv")
         else:
             st.info("No data collected yet.")
