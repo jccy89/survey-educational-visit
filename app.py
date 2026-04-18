@@ -46,7 +46,7 @@ def generate_code():
 st.set_page_config(page_title="TEGAS Industry Visit Survey", layout="centered")
 
 # --- SIDEBAR NAVIGATION ---
-# Add "Admin Panel" to the list of choices
+# Ensure these names match the 'if/elif' strings exactly
 page = st.sidebar.selectbox("Navigate", ["Survey Instructions", "Take Survey", "Claim Certificate", "Admin Panel"])
 
 # --- PAGE 1: INSTRUCTIONS ---
