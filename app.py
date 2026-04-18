@@ -120,8 +120,22 @@ elif page == "Claim Certificate":
     st.title("Download Participation Certificate")
     
     st.info("Note: Each completion code can only be used ONCE. Please ensure your name is spelled correctly before clicking verify.")
+
+    # Using a callout box for the examples
+    st.info("""
+    **Format Examples:**
+    * Full Name: **Jenny Choo Cheng Yi**
+    * Full Name: **Ali Bin Ahmad**
     
-    claim_name = st.text_input("Full Name")
+    *Note: Please ensure the spelling matches your official registration.*
+    """)
+    
+    # Added the 'help' parameter for extra clarity
+    claim_name = st.text_input(
+        "Full Name", 
+        help="Enter your name exactly as shown in the examples above to match our records."
+    )
+
     claim_code = st.text_input("Completion Code").strip()
     
     if st.button("Verify & Download"):
