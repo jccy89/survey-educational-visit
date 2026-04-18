@@ -193,9 +193,6 @@ elif page == "Claim Certificate":
         else:
             st.error("No submissions found yet.")
     
-# --- SIDEBAR NAVIGATION ---
-# ... after your 'Claim Certificate' code block ...
-
 # --- PAGE 4: ADMIN PANEL (Add this here!) ---
 elif page == "Admin Panel":
     st.title("📂 Admin Data Retrieval")
