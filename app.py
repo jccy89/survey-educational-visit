@@ -52,7 +52,7 @@ elif page == "Take Survey":
         # Likert Scale Questions (1-3)
 
         # Example Question (Keep all your Q1-Q24 here)
-q1 = st.select_slider("1. I actively engaged with the sharing sessions and demonstrations during the visit.", options=[1, 2, 3, 4, 5])
+        q1 = st.select_slider("1. I actively engaged with the sharing sessions and demonstrations during the visit.", options=[1, 2, 3, 4, 5])
         q2 = st.select_slider("2. The visit helped me better understand what a startup is and how entrepreneurs begin their journey.", options=[1, 2, 3, 4, 5])
         q3 = st.select_slider("3. This visit helped me understand how TEGAS can support me if I want to start my own business.", options=[1, 2, 3, 4, 5])
         
