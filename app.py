@@ -109,8 +109,8 @@ elif page == "Take Survey":
             st.divider()
 
         # --- Q22, Q23, Q24: TEXT AREAS ---
-        q22 = st.text_area("22. What was the most valuable insight or experience you gained from the visit, and how do you think it will influence your future learning or career?, key="q22")
-        q23 = st.text_area("23. What suggestion(s) do you have to improve future industrial visits or sharing sessions?, key="q23")
+        q22 = st.text_area("22. What was the most valuable insight or experience you gained from the visit, and how do you think it will influence your future learning or career?", key="q22")
+        q23 = st.text_area("23. What suggestion(s) do you have to improve future industrial visits or sharing sessions?", key="q23")
         q24 = st.text_area("24. Do you have a company or industry you would like to visit in the future (e.g. technology, creative media, healthcare, engineering, startups)? If yes, please specify the company name or industry.", key="q24")
 
         submitted = st.form_submit_button("Submit Survey")
