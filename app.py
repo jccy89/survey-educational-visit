@@ -21,16 +21,19 @@ def generate_code():
 st.set_page_config(page_title="TEGAS Industry Visit Survey", layout="centered")
 
 # --- SIDEBAR NAVIGATION ---
-# Initialize session state for navigation if it doesn't exist
+# --- 1. INITIALIZE NAVIGATION STATE ---
 if 'page_nav' not in st.session_state:
-    st.session_state.page_nav = "Survey Instructions"
+    st.session_state.page_nav = 0  # 0 is the index for 'Survey Instructions'
 
-# Update the sidebar to use the session state
+# --- 2. SIDEBAR NAVIGATION ---
+# We use 'index' to tell the sidebar which button to highlight
+page_list = ["Survey Instructions", "Take Survey", "Claim Certificate", "Admin Panel"]
+
 page = st.sidebar.radio(
     "Go to:", 
-    ["Survey Instructions", "Take Survey", "Claim Certificate", "Admin Panel"],
-    index=["Survey Instructions", "Take Survey", "Claim Certificate", "Admin Panel"].index(st.session_state.page_nav),
-    key="navigation_radio"
+    page_list,
+    index=st.session_state.page_nav, # This is the magic link
+    key="nav_radio"
 )
 # --- PAGE 1: INSTRUCTIONS ---
 if page == "Survey Instructions":
@@ -49,10 +52,20 @@ if page == "Survey Instructions":
     
     *Upon completion, you will receive a digital certificate of participation.*
     """)
-    # BIG BUTTON FIX: This now triggers a page switch
+    # BIG BUTTON WORKAROUND
     if st.button("Proceed to Survey", use_container_width=True):
-        st.session_state.page_nav = "Take Survey"
+        # Update the index to 1 (which is 'Take Survey')
+        st.session_state.page_nav = 1
         st.rerun()
+
+# --- 4. RESET STATE ON OTHER PAGES ---
+# This ensures that if they manually click the sidebar, the state stays updated
+if page == "Take Survey":
+    st.session_state.page_nav = 1
+elif page == "Claim Certificate":
+    st.session_state.page_nav = 2
+elif page == "Admin Panel":
+    st.session_state.page_nav = 3
 
 # --- PAGE 2: TAKE SURVEY ---
 elif page == "Take Survey":
