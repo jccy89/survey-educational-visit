@@ -102,10 +102,22 @@ elif page == "Take Survey":
             answers[f"q{i}"] = st.radio(f"q{i}", [1,2,3,4,5], horizontal=True, label_visibility="collapsed", key=f"q{i}")
             st.divider()
 
-        # --- Q22, Q23, Q24: TEXT AREAS ---
-        q22 = st.text_area("22. What was the most valuable insight or experience you gained from the visit, and how do you think it will influence your future learning or career?", key="q22")
-        q23 = st.text_area("23. What suggestion(s) do you have to improve future industrial visits or sharing sessions?", key="q23")
-        q24 = st.text_area("24. Do you have a company or industry you would like to visit in the future (e.g. technology, creative media, healthcare, engineering, startups)? If yes, please specify the company name or industry.", key="q24")
+        # --- Q22: TEXT AREA ---
+        st.write("**22. What was the most valuable insight or experience you gained from the visit, and how do you think it will influence your future learning or career?**")
+        #st.caption("*(Please share what you learned today)*")
+        q22 = st.text_area("q22_input", label_visibility="collapsed", key="q22")
+        st.divider()
+
+        # --- Q23: TEXT AREA ---
+        st.write("**23. What suggestion(s) do you have to improve future industrial visits or sharing sessions?**")
+        #st.caption("*(How can we make this visit better?)*")
+        q23 = st.text_area("q23_input", label_visibility="collapsed", key="q23")
+        st.divider()
+
+        # --- Q24: TEXT AREA ---
+        st.write("**24. Do you have a company or industry you would like to visit in the future (e.g. technology, creative media, healthcare, engineering, startups)? If yes, please specify the company name or industry.**")
+        #st.caption("*(Which sectors are you most interested in?)*")
+        q24 = st.text_area("q24_input", label_visibility="collapsed", key="q24")
 
         submitted = st.form_submit_button("Submit Survey")
 
