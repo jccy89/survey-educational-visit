@@ -122,24 +122,6 @@ elif page == "Take Survey":
         submitted = st.form_submit_button("Submit Survey")
 
     if submitted:
-        # 5. Access the data from 'answers' when saving
-        malaysia_time = datetime.utcnow() + timedelta(hours=8)
-        
-        resp_data = {
-            "Timestamp (MYT)": malaysia_time.strftime("%Y-%m-%d %H:%M:%S"),
-            **answers,  # This "unpacks" all q1-q21 answers into the dictionary
-            "Q4": q4,
-            "Q22": q22, 
-            "Q23": q23, 
-            "Q24": q24
-        }
-        
-        # Save to CSV
-        pd.DataFrame([resp_data]).to_csv(RESPONSE_FILE, mode='a', index=False, header=not os.path.exists(RESPONSE_FILE))
-        
-        # Generate code logic follows...
-
-    if submitted:
         # Check if the text areas are filled
         if not q4.strip() or not q22.strip() or not q23.strip() or not q24.strip():
             st.error("⚠️ Please answer all text questions before submitting.")
