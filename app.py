@@ -20,33 +20,12 @@ def generate_code():
 # --- APP START ---
 st.set_page_config(page_title="TEGAS Industry Visit Survey", layout="centered")
 
-# --- SIDEBAR NAVIGATION ---
-# --- 1. INITIALIZE NAVIGATION STATE ---
-# We use a string key for the page name to make it more readable
-if 'page_nav' not in st.session_state:
-    st.session_state.page_nav = "Survey Instructions"
-
-# --- 2. SIDEBAR NAVIGATION ---
-page_list = ["Survey Instructions", "Take Survey", "Claim Certificate", "Admin Panel"]
-
-# Find the integer position of the current page
-# We use int() to prevent the "MemberDescriptor" or type error
-try:
-    current_index = int(page_list.index(st.session_state.page_nav))
-except (ValueError, KeyError):
-    current_index = 0
-
+# --- SIDEBAR NAVIGATION (Radio Button Format) ---
+st.sidebar.title("Navigation")
 page = st.sidebar.radio(
     "Go to:", 
-    page_list,
-    index=current_index, 
-    key="nav_radio"
+    ["Survey Instructions", "Take Survey", "Claim Certificate", "Admin Panel"]
 )
-
-# --- 3. SYNC STATE ---
-# This ensures that if the user clicks the sidebar manually, 
-# the session_state updates so the "Proceed" button logic stays in sync.
-st.session_state.page_nav = page
 
 # --- PAGE 1: INSTRUCTIONS ---
 if page == "Survey Instructions":
@@ -66,9 +45,8 @@ if page == "Survey Instructions":
     *Upon completion, you will receive a digital certificate of participation.*
     """)
     # BIG BUTTON: This updates the session state and reruns
-    if st.button("Proceed to Survey", use_container_width=True):
-        st.session_state.page_nav = "Take Survey"
-        st.rerun()
+    if st.button("Proceed to Survey"):
+        st.info("Please select 'Take Survey' from the sidebar.")
 
 # --- PAGE 2: TAKE SURVEY ---
 elif page == "Take Survey":
