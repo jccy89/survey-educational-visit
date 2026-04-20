@@ -22,19 +22,32 @@ st.set_page_config(page_title="TEGAS Industry Visit Survey", layout="centered")
 
 # --- SIDEBAR NAVIGATION ---
 # --- 1. INITIALIZE NAVIGATION STATE ---
+# We use a string key for the page name to make it more readable
 if 'page_nav' not in st.session_state:
-    st.session_state.page_nav = 0  # 0 is the index for 'Survey Instructions'
+    st.session_state.page_nav = "Survey Instructions"
 
 # --- 2. SIDEBAR NAVIGATION ---
-# We use 'index' to tell the sidebar which button to highlight
 page_list = ["Survey Instructions", "Take Survey", "Claim Certificate", "Admin Panel"]
+
+# Find the integer position of the current page
+# We use int() to prevent the "MemberDescriptor" or type error
+try:
+    current_index = int(page_list.index(st.session_state.page_nav))
+except (ValueError, KeyError):
+    current_index = 0
 
 page = st.sidebar.radio(
     "Go to:", 
     page_list,
-    index=st.session_state.page_nav, # This is the magic link
+    index=current_index, 
     key="nav_radio"
 )
+
+# --- 3. SYNC STATE ---
+# This ensures that if the user clicks the sidebar manually, 
+# the session_state updates so the "Proceed" button logic stays in sync.
+st.session_state.page_nav = page
+
 # --- PAGE 1: INSTRUCTIONS ---
 if page == "Survey Instructions":
     st.title("Student Feedback Survey")
@@ -52,20 +65,10 @@ if page == "Survey Instructions":
     
     *Upon completion, you will receive a digital certificate of participation.*
     """)
-    # BIG BUTTON WORKAROUND
+    # BIG BUTTON: This updates the session state and reruns
     if st.button("Proceed to Survey", use_container_width=True):
-        # Update the index to 1 (which is 'Take Survey')
-        st.session_state.page_nav = 1
+        st.session_state.page_nav = "Take Survey"
         st.rerun()
-
-# --- 4. RESET STATE ON OTHER PAGES ---
-# This ensures that if they manually click the sidebar, the state stays updated
-if page == "Take Survey":
-    st.session_state.page_nav = 1
-elif page == "Claim Certificate":
-    st.session_state.page_nav = 2
-elif page == "Admin Panel":
-    st.session_state.page_nav = 3
 
 # --- PAGE 2: TAKE SURVEY ---
 elif page == "Take Survey":
