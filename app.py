@@ -148,20 +148,22 @@ elif page == "Take Survey":
             malaysia_time = datetime.utcnow() + timedelta(hours=8)
             timestamp_str = malaysia_time.strftime("%Y-%m-%d %H:%M:%S")
 
-            # 1. Create a dictionary with ALL 24 questions
+            # 1. Create the final dictionary
             resp_data = {
                 "Timestamp (MYT)": timestamp_str,
-                "Q1": q1, "Q2": q2, "Q3": q3, "Q4": q4, "Q5": q5, 
-                "Q6": q6, "Q7": q7, "Q8": q8, "Q9": q9, "Q10": q10, 
-                "Q11": q11, "Q12": q12, "Q13": q13, "Q14": q14, "Q15": q15, 
-                "Q16": q16, "Q17": q17, "Q18": q18, "Q19": q19, "Q20": q20, 
-                "Q21": q21, "Q22": q22, "Q23": q23, "Q24": q24
+                # This double asterisk (**) takes everything inside the 'answers' 
+                # dictionary (q1, q2, q3, q5...q21) and expands it into the CSV
+                **answers, 
+                "Q4": q4,
+                "Q22": q22,
+                "Q23": q23,
+                "Q24": q24
             }
             
             # 2. Append to CSV
             df_new = pd.DataFrame([resp_data])
             df_new.to_csv(RESPONSE_FILE, mode='a', index=False, header=not os.path.exists(RESPONSE_FILE))
-            
+                       
             # 3. Generate Ticket
             ticket = generate_code()
             pd.DataFrame([{"code": ticket}]).to_csv(TICKET_FILE, mode='a', index=False, header=not os.path.exists(TICKET_FILE))
