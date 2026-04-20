@@ -86,7 +86,7 @@ elif page == "Take Survey":
             q_text = questions_list[i-1] # Gets text for Q1-Q3
             st.write(f"**{i}. {q_text}**")
             st.caption(scale_text)
-            answers[f"q{i}"] = st.radio(f"q{i}", [1,2,3,4,5], horizontal=True, label_visibility="collapsed", key=f"q{i}")
+            answers[f"q{i}"] = st.radio(f"q{i}", [1,2,3,4,5], horizontal=True, label_visibility="collapsed", key=f"q{i}, index=None")
             st.divider()
 
         # --- Q4: TEXT AREA (Special Case) ---
@@ -99,7 +99,7 @@ elif page == "Take Survey":
             q_text = questions_list[i-2] # Adjust index because of the Q4 gap
             st.write(f"**{i}. {q_text}**")
             st.caption(scale_text)
-            answers[f"q{i}"] = st.radio(f"q{i}", [1,2,3,4,5], horizontal=True, label_visibility="collapsed", key=f"q{i}")
+            answers[f"q{i}"] = st.radio(f"q{i}", [1,2,3,4,5], horizontal=True, label_visibility="collapsed", key=f"q{i}, index=None")
             st.divider()
 
         # --- Q22: TEXT AREA ---
