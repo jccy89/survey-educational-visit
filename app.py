@@ -33,7 +33,7 @@ if page == "Survey Instructions":
     st.subheader("Industry Visit: TEGAS Digital Village")
     
     st.markdown("""
-    Thank you for participating in the learning visit to **TEGAS Digital Village** on 15th April 2026 organized by School of Foundation Studies, Swinburne Sarawak. 
+    Thank you for participating in the learning visit to **TEGAS Digital Village** on 15th April 2026 organized by School of ABC Studies, XXX University. 
     This survey aims to gather your feedback on your understanding of entrepreneurship and personal insights gained.
     
     **Please note:**
